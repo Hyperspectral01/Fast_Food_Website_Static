@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const port=process.env.PORT || 5500;
+const port=process.env.PORT || 5000;
 
 const app = express();   //this is basically the api on this server
 
@@ -14,14 +14,14 @@ app.use(bodyParser.urlencoded({
 // app.use(express.urlencoded());
 app.use(express.static('public'));
 
-mongoose.connect('mongodb+srv://shreyvyas:password12345@cluster0.xr6h2my.mongodb.net/burger');
+mongoose.connect(<connection_link>);
 var db = mongoose.connection;
 db.on('error', () => console.log("Error in Connecting to Database"));
 db.once('open', () => console.log("Connected to Database"));
 
-app.post("/login", async (req, res) => {                                                                 //ERROR
+app.post("/login", async (req, res) => {                                                                
     var user = req.body.user;
-    var password = req.body.password;                                                                       //WHERE DOES THIS COME FROM
+    var password = req.body.password;                                                                     
 
     var data = {
         "user": user,
@@ -31,20 +31,20 @@ app.post("/login", async (req, res) => {                                        
     const userCount = await db.collection('user').countDocuments(data);
 
     if (userCount > 0) {
-        return res.redirect('/burger.html'); // Corrected path                                    //PROBLEM
+        return res.redirect('/burger.html'); // Corrected path                                  
     }
     else {
         return res.redirect('/index.html');
     }
 });
 
-app.post("/sign_up", async (req, res) => {                                                                 //ERROR
+app.post("/sign_up", async (req, res) => {                                                                 
     var first = req.body.first;
     var last = req.body.last;
     var gender = req.body.gender;
     var email = req.body.email;
     var user = req.body.user;
-    var password = req.body.password;                                                                       //WHERE DOES THIS COME FROM
+    var password = req.body.password;                                                                       
 
     var data = {
         "first": first,
@@ -80,20 +80,20 @@ app.get("/", (req, res) => {
     res.set({
         "Access-Control-Allow-Origin": "*" // Corrected header
     });
-    return res.redirect('/index.html'); // send file or redirect?                                                //PROBLEM
+    return res.redirect('/index.html'); // send file or redirect?                                               
 });
 
 app.get("/s", (req, res) => {
     res.set({
         "Access-Control-Allow-Origin": "*" // Corrected header
     });
-    return res.redirect('/signup.html'); // send file or redirect?                                                //PROBLEM
+    return res.redirect('/signup.html'); // send file or redirect?                                                
 });
 
 
 //This is for listening on port
 
-app.listen(port, () => {                                                                                    //PROBLEM
+app.listen(port, () => {                                                                                    
     console.log("Server has started listening to the port [Basically Running]");
     console.log(`PORT URL is http://localhost:${port}`);
 });
